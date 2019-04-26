@@ -14,20 +14,41 @@
 Route::get('/', function () {
     //return view('welcome');
     $teams = \App\Team::all();
+    $flags = \App\Flag::all()->count();
 
-    $flags=\App\Flag::all()->pluck('name')->all();
+    $out=[];
     foreach ($teams as $t) {
-      $flagsTeam=array_fill_keys($flags,false);
-      foreach ($t->flags as $f){
-        $flagsTeam[$f->name]=true;
-      }
-      $t->flags = $flagsTeam;
+    	$points = 0;
+    	$out[$t->id]['longName']=$t->longName;
+    	foreach ($t->flags as $f){
+    		$out[$t->id][$f->name]=true;
+    		$points+=$f->points;
+    	}
+    	$out[$t->id]['points']=$points;
     }
+    usort($out, function($a, $b) {
+        return $b['points'] <=> $a['points'];
+    });
 
     return view('ctf', [
-      'flags' => $teams
+      'flags' => $flags,
+      'teams' => $out
     ]);
 });
+
+Route::get('team/{id}', function ($id) {
+
+  $team = App\Team::where('id',1)->first();
+  $flags = $team->flags()->orderBy('name');
+
+  return view('team', [
+    'longName' => $team->longName,
+    'flags' => $flags
+  ]);
+});
+
+
+
 
 Route::get('/capture', function () {
     return view('capture');

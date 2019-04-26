@@ -9,6 +9,6 @@ class Team extends Model
     //
     public function flags()
     {
-        return $this->belongsToMany('App\Flag');
+        return $this->belongsToMany('App\Flag')->withPivot('captured');
     }
 }

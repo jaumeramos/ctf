@@ -1,1 +1,23 @@
+composer global require laravel/installer
+composer install
+composer update --no-scripts  
+php artisan key:generate
+
 php artisan migrate:reset
+
+
+$teams = \App\Team::all();
+$out=[];
+foreach ($teams as $t) {
+	$points = 0;
+	$out[$t->id]['longName']=$t->longName;
+	foreach ($t->flags as $f){
+		$out[$t->id][$f->name]=true;
+		$points+=$f->points;
+	}
+	$out[$t->id]['points']=$points;	
+}
+usort($out, function($a, $b) {
+    return $b['points'] <=> $a['points'];
+});
+$out;

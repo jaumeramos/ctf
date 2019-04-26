@@ -9,34 +9,25 @@
 
     </head>
     <body>
-	<h1>RANKING CTF FuturEbre</h1>
+	<h1>Flags Team {{$longName}}</h1>
 
         <div>
 
 	<table class="ctfTable">
 		<thead>
 			<tr>
-				<th>Ranking</th>
+				<th>Flag</th>
 				<th>Points</th>
-				<th>Team</th>
-				<th>F1</th>
-				<th>F2</th>
-				<th>F3</th>
-				<th>F4</th>
-				<th>F5</th>
-				<th>F6</th>
-				<th>F7</th>
-				<th>F8</th>
-				<th>F9</th>
+				<th>Captured</th>
 			</tr>
 		</thead>
 		<tbody>
-	          @foreach ($teams as $k => $t)
+	          @foreach ($flags as $k => $f)
 
 			<tr>
-				<td class="num">{{$k+1}}</td>
-				<td class="num">{{ $t['points'] }}</td>
-				<td class="team">{{ $t['longName'] }}</td>
+				<td class="num">{{ $f->name }}</td>
+				<td class="num">{{ $f->points}}</td>
+				<td class="team">{{ $f->pivot->captured }}</td>
         @for ($i = 1; $i <= $flags; $i++)
           @if (isset($t['F'.$i]))
           <td><img src="green.png" alt="g" height="42" width="42"></td>
